@@ -1,44 +1,62 @@
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-
 const audioContext = new AudioContext();
 
-// pobieramy obiekt audio
-const audioElement = document.getElementById('myAudio');
+const playlist = [
+  './assets/BoxCat_Games_-_12_-_Passing_Time.mp3',
+  './assets/BoxCat_Games_-_02_-_Mt_Fox_Shop.mp3',
+  './assets/Trash80_-_01_-_Icarus.mp3'
+];
+const fieldFilename = document.getElementById('fieldFilename');
+const playlistDom = document.querySelector('.playlist');
+const playlistWindow = document.querySelector('.playlistWindow');
+
+fieldFilename.addEventListener('click', () =>
+  playlistWindow.classList.toggle('hidden')
+);
+
+playlistDom.innerHTML = playlist
+  .map(item => `<li class="playlistItem">${item}</li>`)
+  .join('');
+
+let audioElement = document.createElement('audio');
+audioElement.id = 'myAudio';
+audioElement.type = 'audio/mpeg';
+audioElement.src = playlist[0];
+
+const changeMusicHandler = e => {
+  audioElement.src = playlist[playlist.indexOf(e.target.innerText)];
+  audioElement.play();
+  playButton.innerHTML = '||';
+  this.fieldFilename.innerHTML = `C:\\MUSIC\\${e.target.innerText}`;
+  playlistWindow.classList.toggle('hidden');
+};
+
+playlistDom.addEventListener('click', changeMusicHandler);
 
 const canvas = document.getElementById('canvas');
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const ctx = canvas.getContext('2d');
-// ustalamy źródło dzwieku w audioContext podając mu powyższy obiekt audio
 const track = audioContext.createMediaElementSource(audioElement);
 
-// tworzymy node do sterowania glosnoscia
 const gainNode = audioContext.createGain();
+const analyser = audioContext.createAnalyser();
 
-var analyser = audioContext.createAnalyser();
-
-//podłączamy track do wyjścia audioContext
-// track.connect(audioContext.destination);
 track
   .connect(analyser)
   .connect(gainNode)
   .connect(audioContext.destination);
 
 analyser.smoothingTimeConstant = 0.3;
-analyser.fftSize = 2048;
-var bufferLength = analyser.frequencyBinCount;
-var dataArray = new Uint8Array(bufferLength);
+analyser.fftSize = 512;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
 
-const WIDTH = canvas.width;
-const HEIGHT = canvas.height;
+const width = canvas.width;
+const height = canvas.height;
 
-console.log(WIDTH);
-console.log(HEIGHT);
-
-const barWidth = (WIDTH / bufferLength) * 13;
-console.log(barWidth);
+const barWidth = (width / bufferLength) * 4;
 
 let barHeight;
 let x = 0;
@@ -50,52 +68,40 @@ function renderFrame() {
 
   analyser.getByteFrequencyData(dataArray);
   ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+  ctx.fillRect(0, 0, width, height);
 
   let r, g, b;
-  let bars = 118; // Set total number of bars you want per frame
+  let bars = 118;
 
   for (let i = 0; i < bars; i++) {
     barHeight = dataArray[i] * 2.5;
 
     if (dataArray[i] > 210) {
-      // pink
-      r = 250;
+      r = 255;
       g = 0;
       b = 255;
     } else if (dataArray[i] > 200) {
-      // yellow
-      r = 250;
+      r = 255;
       g = 255;
       b = 0;
     } else if (dataArray[i] > 190) {
-      // yellow/green
-      r = 204;
+      r = 0;
       g = 255;
       b = 0;
     } else if (dataArray[i] > 180) {
-      // blue/green
       r = 0;
-      g = 219;
-      b = 131;
-    } else {
-      // light blue
-      r = 0;
-      g = 199;
+      g = 255;
       b = 255;
+    } else {
+      r = 0;
+      g = 128;
+      b = 128;
     }
 
-    // if (i === 0){
-    //   console.log(dataArray[i])
-    // }
-
     ctx.fillStyle = `rgb(${r},${g},${b})`;
-    ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
-    // (x, y, i, j)
-    // (x, y) Represents start point
-    // (i, j) Represents end point
+    ctx.fillRect(x, height - barHeight, barWidth, barHeight);
 
-    x += barWidth + 10; // Gives 10px space between each bar
+    x += barWidth - 5;
   }
 }
 
@@ -106,17 +112,16 @@ const playButton = document.querySelector('button');
 playButton.addEventListener(
   'click',
   function() {
-    // check if context is in suspended state (autoplay policy)
     if (audioContext.state === 'suspended') {
       audioContext.resume();
     }
-
-    // play or pause track depending on state
     if (this.dataset.playing === 'false') {
       audioElement.play();
+      playButton.innerHTML = '||';
       this.dataset.playing = 'true';
     } else if (this.dataset.playing === 'true') {
       audioElement.pause();
+      playButton.innerHTML = '&#9658';
       this.dataset.playing = 'false';
     }
   },

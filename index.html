@@ -11,19 +11,26 @@
     <link rel="stylesheet" href="styles.css" type="text/css" />
   </head>
   <body>
-    <audio
-      type="audio/mpeg"
-      id="myAudio"
-      src="BoxCat_Games_-_12_-_Passing_Time.mp3"
-    ></audio>
+    <div class="playlistWindow hidden">
+      <div style="padding: 1rem; border: 2px solid white">
+        C:\MUSIC\
+        <ul class="playlist" >
+        </ul>
+      </div>
+    </div>
     <div class="app">
       <div class="titleBar">
         Sound System Digital version 2.5 Copyright (c) 2019 by Krzysztof Ryszawy
       </div>
       <div class="container">
         <div>
+          <button data-playing="false" role="switch" aria-checked="false">
+            <span>|| &#9658</span>
+          </button>
           File name:
-          <span style="color: #800000">C:\MUSIC\FAVORITE\BEST.MID</span>
+          <span id="fieldFilename" 
+            >C:\MUSIC\BoxCat_Games_-_12_-_Passing_Time.mp3</span
+          >
         </div>
 
         <div class="fieldFormat">
@@ -92,7 +99,7 @@
             </div>
             <div>
               Volume:
-              <span style="color: #FFFF00">99</span>
+              <span style="color: #FFFF00"></span>
               <input
                 type="range"
                 id="volume"
@@ -114,9 +121,7 @@
           <<<
         </div>
       </div>
-      <button data-playing="false" role="switch" aria-checked="false">
-        <span>Play/Pause</span>
-      </button>
+
     </div>
     <script type="text/javascript" src="script.js"></script>
   </body>
