@@ -28,6 +28,9 @@ const volumeControl = document.querySelector('#volume');
 
 const changeMusicHandler = e => {
   audioElement.src = playlist[playlist.indexOf(e.target.innerText)];
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
   audioElement.play();
   playButton.innerHTML = '||';
   this.fieldFilename.innerHTML = `${e.target.innerText}`;
