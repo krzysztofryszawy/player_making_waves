@@ -1,3 +1,11 @@
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -24,13 +32,7 @@ button:hover {
   background-color: #800000;
 }
 
-.app {
-  /* height: 100vh; */
-  /* min-width: 450px; */
-}
-
 .container {
-  /* min-height: 100vh; */
   background-color: #0000aa;
   margin: 0.5rem;
   border: 2px solid #ffffff;
@@ -42,14 +44,7 @@ button:hover {
   color: #0000aa;
 }
 
-.fieldFile {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0.5rem;
-  margin: 0.2rem;
-  border: 2px solid #ffffff;
-}
-.fieldFormat {
+.field {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -57,35 +52,10 @@ button:hover {
   margin: 0.2rem;
   border: 2px solid #ffffff;
 }
-.fieldAttributes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 0.5rem;
-  margin: 0.2rem;
-  border: 2px solid #ffffff;
-}
+
 .fieldVisualization {
   padding: 0.5rem;
   height: 400px;
-  margin: 0.2rem;
-  border: 2px solid #ffffff;
-}
-
-.fieldDataPosition {
-  display: flex;
-  /* flex-wrap: wrap; */
-  justify-content: space-between;
-  padding: 0.5rem;
-  margin: 0.2rem;
-  border: 2px solid #ffffff;
-}
-
-.fieldFormat {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 0.5rem;
   margin: 0.2rem;
   border: 2px solid #ffffff;
 }
@@ -113,13 +83,16 @@ button:hover {
   border: 0;
   padding: 0;
 }
+
 .playlistItem {
   cursor: pointer;
 }
+
 .playlistItem:hover {
   background-color: #ffffff;
   color: #800000;
 }
+
 .hidden {
   visibility: hidden;
 }

@@ -23,11 +23,14 @@ audioElement.id = 'myAudio';
 audioElement.type = 'audio/mpeg';
 audioElement.src = playlist[0];
 
+const playButton = document.querySelector('button');
+const volumeControl = document.querySelector('#volume');
+
 const changeMusicHandler = e => {
   audioElement.src = playlist[playlist.indexOf(e.target.innerText)];
   audioElement.play();
   playButton.innerHTML = '||';
-  this.fieldFilename.innerHTML = `C:\\MUSIC\\${e.target.innerText}`;
+  this.fieldFilename.innerHTML = `${e.target.innerText}`;
   playlistWindow.classList.toggle('hidden');
 };
 
@@ -61,7 +64,7 @@ const barWidth = (width / bufferLength) * 4;
 let barHeight;
 let x = 0;
 
-function renderFrame() {
+const renderFrame = () => {
   requestAnimationFrame(renderFrame);
 
   x = 0;
@@ -74,7 +77,7 @@ function renderFrame() {
   let bars = 118;
 
   for (let i = 0; i < bars; i++) {
-    barHeight = dataArray[i] * 2.5;
+    barHeight = dataArray[i] * 3;
 
     if (dataArray[i] > 210) {
       r = 255;
@@ -103,11 +106,7 @@ function renderFrame() {
 
     x += barWidth - 5;
   }
-}
-
-renderFrame();
-
-const playButton = document.querySelector('button');
+};
 
 playButton.addEventListener(
   'click',
@@ -136,8 +135,6 @@ audioElement.addEventListener(
   false
 );
 
-const volumeControl = document.querySelector('#volume');
-
 volumeControl.addEventListener(
   'input',
   function() {
@@ -145,3 +142,5 @@ volumeControl.addEventListener(
   },
   false
 );
+
+renderFrame();
